@@ -10,15 +10,15 @@ class ServiceManager
 {
 
     protected $services = [
-        'db_service' =>
+        'a' =>
             [
-                'class' => 'Application\Controller\DB',
-                'arguments' => ['pdo']
+                'class' => 'A',
+                'arguments' => []
             ],
-        'index_controller' =>
+        'b' =>
             [
-                'class' => 'Application\Controller\IndexController',
-                'arguments' => ['db_service']
+                'class' => 'B',
+                'arguments' => ['a']
             ]
     ];
 
@@ -35,11 +35,34 @@ class ServiceManager
         if(isset($this->services[$name])) {
 
             $arguments = [];
-            foreach($this->services[$name]['arguments'] as $argument) {
-                $arguments[] = $this->get($argument);
+            if(count($this->services[$name]['arguments'])){
+                foreach($this->services[$name]['arguments'] as $argument) {
+                    $arguments[] = $this->get($argument);
+                }
+            } else {
+                $serviceClass = $this->services[$name]['class'];
+                $this->cache[$name] = new $serviceClass();
+                return $this->cache[$name];
             }
+            $r = new ReflectionClass($this->services[$name]['class']);
+            $this->cache[$name] = $r->newInstanceArgs($arguments);
 
-            $this->cache[$name] = new $this->services['name'];
+            return $this->cache[$name];
         }
     }
 }
+
+class A {
+}
+
+class B {
+    protected $a;
+    public function __construct(A $a)
+    {
+        $this->a = $a;
+    }
+}
+
+$serviceManager = new ServiceManager();
+
+var_dump($serviceManager->get('b'));
