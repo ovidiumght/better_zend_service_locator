@@ -46,9 +46,9 @@ class ServiceManager
             }
             $r = new ReflectionClass($this->services[$name]['class']);
             $this->cache[$name] = $r->newInstanceArgs($arguments);
-
-            return $this->cache[$name];
         }
+
+        return $this->cache[$name];
     }
 }
 

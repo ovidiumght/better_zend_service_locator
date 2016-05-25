@@ -64,6 +64,11 @@ return array(
     //     ),
     // ),
 
+    'service_manager' => [
+        'factories' => [
+            'DI\Container' => 'DI\ZendFramework2\Service\DIContainerFactory',
+        ]
+    ]
    // Initial configuration with which to seed the ServiceManager.
    // Should be compatible with Zend\ServiceManager\Config.
    // 'service_manager' => array(),
