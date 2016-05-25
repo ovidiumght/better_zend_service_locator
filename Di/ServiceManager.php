@@ -1,11 +1,8 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: ovidiu
- * Date: 24.05.2016
- * Time: 21:20
- */
+namespace Di;
+
+
 class ServiceManager
 {
 
@@ -44,7 +41,7 @@ class ServiceManager
                 $this->cache[$name] = new $serviceClass();
                 return $this->cache[$name];
             }
-            $r = new ReflectionClass($this->services[$name]['class']);
+            $r = new \ReflectionClass($this->services[$name]['class']);
             $this->cache[$name] = $r->newInstanceArgs($arguments);
         }
 
@@ -52,6 +49,7 @@ class ServiceManager
     }
 }
 
+/*
 class A {
 }
 
@@ -66,3 +64,4 @@ class B {
 $serviceManager = new ServiceManager();
 
 var_dump($serviceManager->get('b'));
+*/
